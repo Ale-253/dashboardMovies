@@ -20,6 +20,6 @@ TableItemMovies.propTypes = {
     genre: PropTypes.object
 }
 
-TableItemMovies.defaultProp = {
+TableItemMovies.defaultProps = {
     genres: 'SIN ESPECIFICAR'
 }
