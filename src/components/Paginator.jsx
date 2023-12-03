@@ -32,5 +32,5 @@ export const Paginator = ({ pagination, apiCall }) => {
 
 Paginator.propTypes = {
     pagination: PropTypes.object,
-    apiCall: PropTypes.function
+    apiCall: PropTypes.func
 }
