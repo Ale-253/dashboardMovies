@@ -2,20 +2,25 @@ import { Card, Table } from "react-bootstrap"
 import { TableItemMovies } from "../components/TableItemMovies";
 import { useEffect, useState } from "react";
 import { Loading } from "../components/loading";
+import { Paginator } from "../components/Paginator";
 
 export const MoviesListPage = () => {
 
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true)
+    const [pagination, setPagination] = useState({})
+
+    const apiCall = async (endpoint = '/api/v1/movies') => {
+
+        const response = await fetch(`http://localhost:3001${endpoint}`);
+        const result = await response.json();
+
+        setLoading(false)
+        setMovies(result.data)
+        setPagination(result.meta)
+    }
 
     useEffect(() => {
-
-        const apiCall = async () => {
-            const response = await fetch('http://localhost:3031/api/movies');
-            const result = await response.json();
-            setLoading(false)
-            setMovies(result.data)
-        }
 
         apiCall();
 
@@ -33,6 +38,7 @@ export const MoviesListPage = () => {
                     :
                     <Card>
                         <Card.Body>
+                            <Paginator pagination={pagination} apiCall={apiCall} />
                             <Table stripped>
                                 <thead>
                                     <tr>
@@ -49,6 +55,7 @@ export const MoviesListPage = () => {
                                     ))}
                                 </tbody>
                             </Table>
+                            <Paginator pagination={pagination} apiCall={apiCall} />
                         </Card.Body>
                     </Card>
             }
