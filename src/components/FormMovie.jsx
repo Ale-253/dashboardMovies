@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Card, CardBody, CardHeader, CardTitle, Form } from "react-bootstrap"
+import { Button, Card, CardBody, CardHeader, CardTitle, Form } from "react-bootstrap"
 
 export const FormMovie = () => {
 
@@ -71,6 +71,9 @@ export const FormMovie = () => {
                             }
                         </Form.Select>
                     </Form.Group>
+                    <Button variant="outline-dark" className="w-100 mt-5">
+                            Guardar
+                    </Button>
                 </Form>
             </CardBody>
         </Card>
