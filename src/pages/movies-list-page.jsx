@@ -13,7 +13,7 @@ export const MoviesListPage = () => {
 
     const apiCall = async (endpoint = '/api/v1/movies') => {
 
-        const response = await fetch(`http://localhost:3001${endpoint}`);
+        const response = await fetch(`${import.meta.env.VITE_APP_API_HOST}${endpoint}`);
         const result = await response.json();
 
         setLoading(false)
