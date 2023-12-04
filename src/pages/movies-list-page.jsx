@@ -3,6 +3,7 @@ import { TableItemMovies } from "../components/TableItemMovies";
 import { useEffect, useState } from "react";
 import { Loading } from "../components/loading";
 import { Paginator } from "../components/Paginator";
+import { FormSearchMovies } from "../components/FormSearchMovies.JSX";
 
 export const MoviesListPage = () => {
 
@@ -38,8 +39,11 @@ export const MoviesListPage = () => {
                     :
                     <Card>
                         <Card.Body>
+                            <div className="d-flex justify-content-between">
+                                <FormSearchMovies apiCall={apiCall} />
+                            </div>
                             <Paginator pagination={pagination} apiCall={apiCall} />
-                            <Table stripped>
+                            <Table striped>
                                 <thead>
                                     <tr>
                                         <th>Título</th>
@@ -47,11 +51,12 @@ export const MoviesListPage = () => {
                                         <th>Rating</th>
                                         <th>Géneros</th>
                                         <th>Premios</th>
+                                        <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {movies.map(({ title, length, genre, awards, rating }, index) => (
-                                        <TableItemMovies key={index + title} title={title} length={length} genre={genre} awards={awards} rating={rating} />
+                                        <TableItemMovies key={index + title} title={title} length={length} genre={genre} awards={parseInt(awards, 10)} rating={parseFloat(rating)} />
                                     ))}
                                 </tbody>
                             </Table>

@@ -6,7 +6,7 @@ export const Paginator = ({ pagination, apiCall }) => {
             <nav aria-label="Page navigation example">
                 <ul className="pagination">
                     <li className="page-item" hidden={pagination.currentPage === 1}>
-                        <a className="page-link" href="#" aria-label="Previous" onClick={() => apiCall(`/api/v1/movies?=${pagination.currentPage-1}`)}>
+                        <a className="page-link" href="#" aria-label="Previous" onClick={() => apiCall(`/api/v1/movies?page=${pagination.currentPage - 1}`)}>
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -19,7 +19,7 @@ export const Paginator = ({ pagination, apiCall }) => {
                     ))}
 
                     <li className="page-item" hidden={pagination.currentPage === pagination.pages[pagination.pages.length - 1].number}>
-                        <a className="page-link" href="#" aria-label="Next" onClick={() => apiCall(`/api/v1/movies?=${pagination.currentPage+1}`)}>
+                        <a className="page-link" href="#" aria-label="Next" onClick={() => apiCall(`/api/v1/movies?page=${pagination.currentPage + 1}`)}>
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
