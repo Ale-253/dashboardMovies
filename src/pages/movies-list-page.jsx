@@ -26,7 +26,27 @@ export const MoviesListPage = () => {
 
         apiCall();
 
-    }, [])
+    }, []);
+
+    const handleAddMovie = async (formData) => {
+        try {
+            
+            let response = await fetch(`${import.meta.env.VITE_APP_API_URL_BASE}/movies`,{
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Content-Type': 'application/json'  
+                }
+            });
+
+            let result = await response.json();
+
+            console.log(result);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
 
     return (
@@ -36,7 +56,7 @@ export const MoviesListPage = () => {
             </div>
             <Row>
                 <Col sm={12} md={4}>
-                    <FormMovie />
+                    <FormMovie handleAddMovie={handleAddMovie} />
                 </Col>
                 <Col>
                     {loading ? (
