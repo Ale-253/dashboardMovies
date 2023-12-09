@@ -44,7 +44,9 @@ export const FormMovie = ({ handleAddMovie }) => {
             genre_id: "",
         },
         onSubmit: (values) => {
-            console.log(values);
+
+            /* -> EN EL CASO DE QUE QUERAMOS SUBIR IMAGENES
+
             const data = new FormData()
             data.append("title", values.title)
             data.append("rating", values.rating)
@@ -54,6 +56,8 @@ export const FormMovie = ({ handleAddMovie }) => {
             data.append("genre_id", values.genre_id)
 
             handleAddMovie(data);
+            */
+           handleAddMovie(values);
             formik.handleReset();
         }
     })

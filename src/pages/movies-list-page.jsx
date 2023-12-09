@@ -28,12 +28,13 @@ export const MoviesListPage = () => {
 
     }, []);
 
-    const handleAddMovie = async (formData) => {
+    const handleAddMovie = async (data) => {
         try {
             
             let response = await fetch(`${import.meta.env.VITE_APP_API_URL_BASE}/movies`,{
                 method: 'POST',
-                body: formData,
+                //body: data, <-- EN EL CASO QUE QUERAMOS SUBIR IMAGENES
+                body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'  
                 }
