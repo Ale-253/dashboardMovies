@@ -41,7 +41,7 @@ export const FormMovie = ({ handleAddMovie, handleUpdateMovie, movie, setMovie }
                 awards: movie.awards,
                 release_date: movie.release_date.split('T')[0],
                 length: movie.length,
-                genre_id: movie.genre.id,
+                genre_id: movie.genre?.id,
             })
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
