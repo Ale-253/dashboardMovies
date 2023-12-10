@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-export const TableItemMovies = ({ title, rating, length, genre, awards }) => {
+export const TableItemMovies = ({ movie: { title, rating, length, genre, awards }, handleEditMovie }) => {
     return (
         <tr>
             <td>{title}</td>
@@ -10,10 +10,10 @@ export const TableItemMovies = ({ title, rating, length, genre, awards }) => {
             <td>{awards}</td>
             <td>
                 <div className='d-flex justify-content-around'>
-                <button className='btn btn-sm btn-primary'>
+                    <button className='btn btn-sm btn-primary'>
                         <i className='fas fa-eye'></i>
                     </button>
-                    <button className='btn btn-sm btn-success'>
+                    <button className='btn btn-sm btn-success' onClick={() => handleEditMovie}>
                         <i className='fas fa-pencil-alt'></i>
                     </button>
                     <button className='btn btn-sm btn-danger'>
@@ -26,11 +26,8 @@ export const TableItemMovies = ({ title, rating, length, genre, awards }) => {
 }
 
 TableItemMovies.propTypes = {
-    title: PropTypes.string,
-    rating: PropTypes.number,
-    awards: PropTypes.number,
-    length: PropTypes.number,
-    genre: PropTypes.object
+    movie: PropTypes.object,
+    handleEditMovie: PropTypes.func
 }
 
 TableItemMovies.defaultProps = {

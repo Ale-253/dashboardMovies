@@ -2,8 +2,9 @@ import { PropTypes } from "prop-types"
 import { useFormik } from "formik"
 import { useEffect, useState } from "react"
 import { Button, Card, CardBody, CardHeader, CardTitle, Form } from "react-bootstrap"
+import { validate } from '../validations/moviesValidator'
 
-export const FormMovie = ({ handleAddMovie }) => {
+export const FormMovie = ({ handleAddMovie, movie }) => {
 
     const [genres, setGenres] = useState([])
 
@@ -29,20 +30,35 @@ export const FormMovie = ({ handleAddMovie }) => {
     }
 
     useEffect(() => {
-
         getGenres()
+    }, []);
 
-    }, [])
+    useEffect(() => {
+        if (movie) {
+            formik.setValues({
+                title: movie.title,
+                rating: movie.rating,
+                awards: movie.awards,
+                release_date: movie.release_date.split('T')[0],
+                length: movie.length,
+                genre_id: movie.genre.id,
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [movie]);
 
     const formik = useFormik({
         initialValues: {
             title: "",
-            rating: 0,
-            awards: 0,
+            rating: "",
+            awards: "",
             release_date: "",
-            length: 0,
+            length: "",
             genre_id: "",
         },
+
+        validate,
+
         onSubmit: (values) => {
 
             /* -> EN EL CASO DE QUE QUERAMOS SUBIR IMAGENES
@@ -57,7 +73,7 @@ export const FormMovie = ({ handleAddMovie }) => {
 
             handleAddMovie(data);
             */
-           handleAddMovie(values);
+            handleAddMovie(values);
             formik.handleReset();
         }
     })
@@ -79,7 +95,9 @@ export const FormMovie = ({ handleAddMovie }) => {
                             name="title"
                             value={formik.values.title}
                             onChange={formik.handleChange}
+                            className={formik.errors.title && 'is-invalid'}
                         />
+                        {formik.errors.title ? <div className="text-danger ml-2">{formik.errors.title}</div> : null}
                     </Form.Group>
                     <Form.Group className="mb-3 col-12">
                         <Form.Label>Rating</Form.Label>
@@ -88,7 +106,9 @@ export const FormMovie = ({ handleAddMovie }) => {
                             name="rating"
                             value={formik.values.rating}
                             onChange={formik.handleChange}
+                            className={formik.errors.rating && 'is-invalid'}
                         />
+                        {formik.errors.rating ? <div className="text-danger ml-2">{formik.errors.rating}</div> : null}
                     </Form.Group>
                     <Form.Group className="mb-3 col-12">
                         <Form.Label>Premios</Form.Label>
@@ -97,7 +117,9 @@ export const FormMovie = ({ handleAddMovie }) => {
                             name="awards"
                             value={formik.values.awards}
                             onChange={formik.handleChange}
+                            className={formik.errors.awards && 'is-invalid'}
                         />
+                        {formik.errors.awards ? <div className="text-danger ml-2">{formik.errors.awards}</div> : null}
                     </Form.Group>
                     <Form.Group className="mb-3 col-12">
                         <Form.Label>Duración</Form.Label>
@@ -106,7 +128,9 @@ export const FormMovie = ({ handleAddMovie }) => {
                             name="length"
                             value={formik.values.length}
                             onChange={formik.handleChange}
+                            className={formik.errors.length && 'is-invalid'}
                         />
+                        {formik.errors.length ? <div className="text-danger ml-2">{formik.errors.length}</div> : null}
                     </Form.Group>
                     <Form.Group className="mb-3 col-12">
                         <Form.Label>Fecha de estreno</Form.Label>
@@ -115,25 +139,33 @@ export const FormMovie = ({ handleAddMovie }) => {
                             name="release_date"
                             value={formik.values.release_date}
                             onChange={formik.handleChange}
+                            className={formik.errors.release_date && 'is-invalid'}
                         />
+                        {formik.errors.release_date ? <div className="text-danger ml-2">{formik.errors.release_date}</div> : null}
                     </Form.Group>
                     <Form.Group className="mb-3 col-12">
                         <Form.Label>Género</Form.Label>
                         <Form.Select
-                            className="form-control"
+                            className={`form-control ${formik.errors.release_date && 'is-invalid'}`}
                             name="genre_id"
                             value={formik.values.genre_id}
                             onChange={formik.handleChange}
                         >
-                            <option hidden value={''}>Selecciona el género</option>
+                            <option hidden defaultValue>Selecciona el género</option>
                             {
                                 genres.map(({ id, name }) => <option key={id} value={id}>{name}</option>)
                             }
                         </Form.Select>
+                        {formik.errors.genre_id ? <div className="text-danger ml-2">{formik.errors.genre_id}</div> : null}
                     </Form.Group>
-                    <Button type="submit" variant="outline-dark" className="w-100 mt-5">
-                        Guardar
-                    </Button>
+                    <div className="d-flex justify-content-between">
+                        <Button type="button" onClick={() => formik.resetForm()} variant="outline-secondary" className="mt-5">
+                            Cancelar
+                        </Button>
+                        <Button type="submit" variant="outline-dark" className="mt-5">
+                            Guardar
+                        </Button>
+                    </div>
                 </Form>
             </CardBody>
         </Card>
@@ -141,5 +173,6 @@ export const FormMovie = ({ handleAddMovie }) => {
 }
 
 FormMovie.propTypes = {
-    handleAddMovie: PropTypes.func
+    handleAddMovie: PropTypes.func,
+    movie: PropTypes.object
 }

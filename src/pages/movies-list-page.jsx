@@ -9,6 +9,7 @@ import { FormMovie } from "../components/FormMovie";
 export const MoviesListPage = () => {
 
     const [movies, setMovies] = useState([]);
+    const [movie, setMovie] = useState(null);
     const [loading, setLoading] = useState(true)
     const [pagination, setPagination] = useState({})
 
@@ -30,13 +31,13 @@ export const MoviesListPage = () => {
 
     const handleAddMovie = async (data) => {
         try {
-            
-            let response = await fetch(`${import.meta.env.VITE_APP_API_URL_BASE}/movies`,{
+
+            let response = await fetch(`${import.meta.env.VITE_APP_API_URL_BASE}/movies`, {
                 method: 'POST',
                 //body: data, <-- EN EL CASO QUE QUERAMOS SUBIR IMAGENES
                 body: JSON.stringify(data),
                 headers: {
-                    'Content-Type': 'application/json'  
+                    'Content-Type': 'application/json'
                 }
             });
 
@@ -44,6 +45,23 @@ export const MoviesListPage = () => {
 
             console.log(result);
 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleEditMovie = async (id) => {
+        try {
+
+            let response = await fetch(
+                `${import.meta.env.VITE_APP_API_URL_BASE}/movies/${id}`
+            );
+
+            let result = await response.json();
+
+            if (result.ok) {
+                setMovie(result.data)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -57,7 +75,7 @@ export const MoviesListPage = () => {
             </div>
             <Row>
                 <Col sm={12} md={4}>
-                    <FormMovie handleAddMovie={handleAddMovie} />
+                    <FormMovie handleAddMovie={handleAddMovie} movie={movie} />
                 </Col>
                 <Col>
                     {loading ? (
@@ -81,9 +99,14 @@ export const MoviesListPage = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {movies.map(({ title, length, genre, awards, rating }, index) => (
-                                            <TableItemMovies key={index + title} title={title} length={length} genre={genre} awards={parseInt(awards, 10)} rating={parseFloat(rating)} />
-                                        ))}
+                                        {movies.map(
+                                            (movie, index) => (
+                                                <TableItemMovies
+                                                    key={index + movie.title}
+                                                    movie={movie}
+                                                    handleEditMovie={handleEditMovie}
+                                                />
+                                            ))}
                                     </tbody>
                                 </Table>
                                 <Paginator pagination={pagination} apiCall={apiCall} />
