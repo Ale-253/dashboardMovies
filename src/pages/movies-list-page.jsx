@@ -5,6 +5,7 @@ import { Loading } from "../components/loading";
 import { Paginator } from "../components/Paginator";
 import { FormSearchMovies } from "../components/FormSearchMovies.JSX";
 import { FormMovie } from "../components/FormMovie";
+import { Toast } from "../utils/toast";
 
 export const MoviesListPage = () => {
 
@@ -43,7 +44,17 @@ export const MoviesListPage = () => {
 
             let result = await response.json();
 
-            console.log(result);
+            if (result.ok) {
+                Toast.fire({
+                    icon: "success",
+                    title: result.msg
+                });
+            }
+
+            setMovies([
+                ...movies,
+                result.data
+            ])
 
         } catch (error) {
             console.log(error);
@@ -56,12 +67,35 @@ export const MoviesListPage = () => {
             let response = await fetch(
                 `${import.meta.env.VITE_APP_API_URL_BASE}/movies/${id}`
             );
-
             let result = await response.json();
 
             if (result.ok) {
                 setMovie(result.data)
             }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleUpdateMovie = async (id, data) => {
+        try {
+            let response = await fetch(`${import.meta.env.VITE_APP_API_URL_BASE}/movies/${id}`, {
+                method: 'PUT',
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": "application/json"
+                },
+            })
+
+            let result = await response.json()
+
+            if (result.ok) {
+                Toast.fire({
+                    icon: "success",
+                    title: result.msg
+                });
+            }
+
         } catch (error) {
             console.log(error);
         }
@@ -75,7 +109,7 @@ export const MoviesListPage = () => {
             </div>
             <Row>
                 <Col sm={12} md={4}>
-                    <FormMovie handleAddMovie={handleAddMovie} movie={movie} />
+                    <FormMovie handleAddMovie={handleAddMovie} handleUpdateMovie={handleUpdateMovie} movie={movie} setMovie={setMovie}/>
                 </Col>
                 <Col>
                     {loading ? (

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { Button, Card, CardBody, CardHeader, CardTitle, Form } from "react-bootstrap"
 import { validate } from '../validations/moviesValidator'
 
-export const FormMovie = ({ handleAddMovie, movie }) => {
+export const FormMovie = ({ handleAddMovie, handleUpdateMovie, movie, setMovie }) => {
 
     const [genres, setGenres] = useState([])
 
@@ -47,6 +47,11 @@ export const FormMovie = ({ handleAddMovie, movie }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [movie]);
 
+    const handleReset = () => {
+        formik.resetForm();
+        setMovie(null)
+    }
+
     const formik = useFormik({
         initialValues: {
             title: "",
@@ -73,7 +78,12 @@ export const FormMovie = ({ handleAddMovie, movie }) => {
 
             handleAddMovie(data);
             */
-            handleAddMovie(values);
+
+            movie ?
+                handleUpdateMovie(movie.id, values)
+                :
+                handleAddMovie(values);
+
             formik.handleReset();
         }
     })
@@ -159,7 +169,7 @@ export const FormMovie = ({ handleAddMovie, movie }) => {
                         {formik.errors.genre_id ? <div className="text-danger ml-2">{formik.errors.genre_id}</div> : null}
                     </Form.Group>
                     <div className="d-flex justify-content-between">
-                        <Button type="button" onClick={() => formik.resetForm()} variant="outline-secondary" className="mt-5">
+                        <Button type="button" onClick={() => handleReset} variant="outline-secondary" className="mt-5">
                             Cancelar
                         </Button>
                         <Button type="submit" variant="outline-dark" className="mt-5">
@@ -174,5 +184,7 @@ export const FormMovie = ({ handleAddMovie, movie }) => {
 
 FormMovie.propTypes = {
     handleAddMovie: PropTypes.func,
+    handleUpdateMovie: PropTypes.func,
+    setMovie: PropTypes.func,
     movie: PropTypes.object
 }

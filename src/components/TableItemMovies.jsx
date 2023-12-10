@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 
-export const TableItemMovies = ({ movie: { title, rating, length, genre, awards }, handleEditMovie }) => {
+export const TableItemMovies = ({ movie: { id, title, rating, length, genre, awards }, handleEditMovie }) => {
     return (
         <tr>
             <td>{title}</td>
@@ -13,7 +13,7 @@ export const TableItemMovies = ({ movie: { title, rating, length, genre, awards 
                     <button className='btn btn-sm btn-primary'>
                         <i className='fas fa-eye'></i>
                     </button>
-                    <button className='btn btn-sm btn-success' onClick={() => handleEditMovie}>
+                    <button className='btn btn-sm btn-success' onClick={() => handleEditMovie(id)}>
                         <i className='fas fa-pencil-alt'></i>
                     </button>
                     <button className='btn btn-sm btn-danger'>
